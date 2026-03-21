@@ -64,6 +64,13 @@ if [[ -d "${REPO_DIR}/commands" ]]; then
     done < <(find "${REPO_DIR}/commands" -name "*.md" -print0)
 fi
 
+# ── Rules (AGENTS.md) ─────────────────────────────────────────────────────────
+if [[ -f "${REPO_DIR}/AGENTS.md" ]]; then
+    echo ""
+    echo "Rules"
+    sync_file "${REPO_DIR}/AGENTS.md" "${OPENCODE_DIR}/AGENTS.md"
+fi
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo ""
 echo "────────────────────────────────────────"
