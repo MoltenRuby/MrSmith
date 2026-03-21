@@ -4,8 +4,16 @@ mode: all
 temperature: 0.1
 steps: 15
 tools:
-  write: true
+  bash: true
   edit: true
+  write: true
+  patch: true
+  read: true
+  grep: true
+  glob: true
+  list: true
+  skill: true
+  question: true
 permission:
   bash:
     "*": allow

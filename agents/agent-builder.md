@@ -4,8 +4,16 @@ mode: primary
 model: github-copilot/claude-sonnet-4.6
 temperature: 0.1
 tools:
-  write: true
+  bash: true
   edit: true
+  write: true
+  patch: true
+  read: true
+  grep: true
+  glob: true
+  list: true
+  skill: true
+  question: true
 permission:
   bash:
     "*": ask
@@ -136,7 +144,7 @@ Follow these phases in order. Do not advance to the next phase until the current
 ### Phase 2 — Source code analysis
 
 1. Read all relevant source files in the user's project. Quote file paths and line numbers when referencing code.
-2. Read all existing agent, skill, command, and rule files in `~/.config/opencode/agents/`, `.opencode/agents/`, `~/.config/opencode/skills/`, and `.opencode/skills/` to understand what already exists and avoid duplication or naming conflicts.
+2. Read all existing agent, skill, command, and rule files. The MrSmith checkout at `agents/` and `skills/` (relative to the project root) is the **source of truth** — always read from there first. Also check `~/.config/opencode/agents/`, `.opencode/agents/`, `~/.config/opencode/skills/`, and `.opencode/skills/` for any files not present in the checkout. Avoid duplication or naming conflicts across all locations.
 3. Map each requirement to the existing configuration that is relevant to it.
 4. If the configuration is unclear in any area relevant to a requirement, say so explicitly and investigate further before drawing conclusions.
 5. Summarise findings factually. Do not speculate about intent.

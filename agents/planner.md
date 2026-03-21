@@ -4,8 +4,16 @@ mode: all
 model: anthropic/claude-sonnet-4-6
 temperature: 0.1
 tools:
-  write: false
+  bash: true
   edit: false
+  write: false
+  patch: false
+  read: true
+  grep: true
+  glob: true
+  list: true
+  skill: true
+  question: true
 permission:
   bash:
     # bd data accumulation
