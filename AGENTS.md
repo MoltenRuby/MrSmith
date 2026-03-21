@@ -1,6 +1,11 @@
 # Agent Instructions
 
-This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
+This project uses **bd** (beads) for issue tracking.
+
+**At the start of every new session or after context compaction, run:**
+```bash
+bd prime
+```
 
 ## Quick Reference
 
@@ -10,6 +15,15 @@ bd show <id>          # View issue details
 bd update <id> --claim  # Claim work atomically
 bd close <id>         # Complete work
 bd dolt push          # Push beads data to remote
+bd hooks install      # Install git hooks (run once after bd init)
+```
+
+## Setup (first time or new clone)
+
+```bash
+bd init               # Interactive (humans)
+bd init --quiet       # Non-interactive (agents)
+bd hooks install      # Install pre-commit / post-merge hooks
 ```
 
 ## Non-Interactive Shell Commands
@@ -56,11 +70,20 @@ cp -rf source dest          # NOT: cp -r source dest
 bd ready --json
 ```
 
+**Before creating an issue, check for duplicates:**
+
+```bash
+bd search "<keyword>" --json
+```
+
 **Create new issues:**
 
 ```bash
 bd create "Issue title" --description="Detailed context" -t bug|feature|task -p 0-4 --json
 bd create "Issue title" --description="What this issue is about" -p 1 --deps discovered-from:bd-123 --json
+
+# Use stdin for descriptions with special characters (backticks, !, nested quotes)
+echo 'Description with `backticks` and "quotes"' | bd create "Title" --description=- --json
 ```
 
 **Claim and update:**
@@ -74,6 +97,7 @@ bd update bd-42 --priority 1 --json
 
 ```bash
 bd close bd-42 --reason "Completed" --json
+bd close bd-42 --suggest-next --json   # Also shows newly unblocked issues
 ```
 
 ### Issue Types
@@ -99,7 +123,39 @@ bd close bd-42 --reason "Completed" --json
 3. **Work on it**: Implement, test, document
 4. **Discover new work?** Create linked issue:
    - `bd create "Found bug" --description="Details about what was found" -p 1 --deps discovered-from:<parent-id>`
-5. **Complete**: `bd close <id> --reason "Done"`
+5. **Complete**: `bd close <id> --reason "Done" --suggest-next`
+
+### Enriching issues as work progresses
+
+As you learn more about a task, record it on the issue — do not rely on memory or inline comments.
+
+**Update the current issue with new knowledge:**
+```bash
+bd update <id> --notes "discovered that X affects Y"     # set notes (replaces)
+bd update <id> --append-notes "also: Z edge case found"  # append to existing notes
+bd update <id> --design "approach: use pattern A not B"  # record design decisions
+bd update <id> --acceptance "must handle empty input"    # refine acceptance criteria
+```
+
+**Store design content from files or stdin (for long text or special characters):**
+```bash
+echo 'Use `interface{}` not `any` for Go 1.17 compat' | bd update <id> --design-file -
+```
+
+**Capture knowledge that spans multiple sessions or issues:**
+```bash
+bd remember "always run tests with -race flag"           # project-level insight
+bd remember "auth uses JWT, not sessions" --key auth     # with explicit key
+bd memories <keyword>                                    # retrieve stored memories
+```
+Memories are injected automatically at `bd prime` time — they survive context compaction and account rotation.
+
+**File discovered work as a linked issue:**
+```bash
+# Dependency types: discovered-from, caused-by, validates, supersedes, blocks, related
+bd create "Found: X breaks under Y" -p 1 --deps discovered-from:<parent-id> --json
+bd create "Tests for feature X" -p 2 --deps validates:<feature-id> --json
+```
 
 ### Auto-Sync
 
@@ -113,13 +169,26 @@ bd automatically syncs via Dolt:
 
 - ✅ Use bd for ALL task tracking
 - ✅ Always use `--json` flag for programmatic use
-- ✅ Link discovered work with `discovered-from` dependencies
+- ✅ Link discovered work with `discovered-from`
 - ✅ Check `bd ready` before asking "what should I work on?"
+- ✅ Include the issue ID in commit messages: `git commit -m "Fix thing (MrSmith-0e0)"`
+- ❌ Do NOT use `bd edit` — it opens an interactive editor agents cannot use; use `bd update` with flags instead
 - ❌ Do NOT create markdown TODO lists
 - ❌ Do NOT use external issue trackers
 - ❌ Do NOT duplicate tracking systems
 
 For more details, see README.md and docs/QUICKSTART.md.
+
+<!-- END BEADS INTEGRATION -->
+
+## Troubleshooting
+
+If bd behaves unexpectedly (hooks missing, database stale, sync errors):
+
+```bash
+bd doctor --agent --json    # self-diagnosable output with exact remediation commands
+bd doctor --fix             # automatically fix detected issues
+```
 
 ## Landing the Plane (Session Completion)
 
@@ -146,5 +215,3 @@ For more details, see README.md and docs/QUICKSTART.md.
 - NEVER stop before pushing - that leaves work stranded locally
 - NEVER say "ready to push when you are" - YOU must push
 - If push fails, resolve and retry until it succeeds
-
-<!-- END BEADS INTEGRATION -->
