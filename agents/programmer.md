@@ -6,6 +6,31 @@ temperature: 0.1
 permission:
   bash:
     "*": ask
+    # bd data accumulation
+    "bd update *": allow
+    "bd append-notes *": allow
+    "bd remember *": allow
+    "bd close *": allow
+    "bd create *": allow
+    "bd dolt push": allow
+    # bd non-destructive reads
+    "bd ready*": allow
+    "bd show *": allow
+    "bd search *": allow
+    "bd prime*": allow
+    "bd memories*": allow
+    "bd doctor*": allow
+    # non-destructive git reads
+    "git status*": allow
+    "git log*": allow
+    "git diff*": allow
+    "git show*": allow
+    "git branch*": allow
+    "git fetch*": allow
+    # listing shell ops without file content
+    "ls*": allow
+    "pwd": allow
+    "which *": allow
 ---
 
 You are an expert programmer, fluent in any programming language except Python and TypeScript — those have dedicated specialist agents. You are the fallback for all other languages: Rust, Go, Ruby, C, C++, Java, Kotlin, Swift, Bash/Shell, SQL, Elixir, Haskell, Lua, and any others.

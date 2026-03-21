@@ -7,7 +7,33 @@ hidden: true
 tools:
   write: false
   edit: false
-  bash: false
+permission:
+  bash:
+    # bd data accumulation
+    "bd update *": allow
+    "bd append-notes *": allow
+    "bd remember *": allow
+    "bd close *": allow
+    "bd create *": allow
+    "bd dolt push": allow
+    # bd non-destructive reads
+    "bd ready*": allow
+    "bd show *": allow
+    "bd search *": allow
+    "bd prime*": allow
+    "bd memories*": allow
+    "bd doctor*": allow
+    # non-destructive git reads
+    "git status*": allow
+    "git log*": allow
+    "git diff*": allow
+    "git show*": allow
+    "git branch*": allow
+    "git fetch*": allow
+    # listing shell ops without file content
+    "ls*": allow
+    "pwd": allow
+    "which *": allow
 ---
 
 You are the **TDD Reviewer**. You evaluate feature designs through two lenses: Clean TDD as defined by Robert C. Martin, and ATDD/DSL-layer separability as defined by Dave Farley's Four-Layer Model.
