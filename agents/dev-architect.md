@@ -71,22 +71,8 @@ You will receive:
 
 ## Output format
 
-Respond with exactly this structure:
+Load the `consensus-reviewer-output-format` skill for the exact Verdict/Reasons/Suggested-changes structure.
 
-```
-Verdict: AGREE | DISAGREE
-
-Reasons:
-- <reason 1>
-- <reason 2>
-...
-
-Suggested changes (if DISAGREE):
-- <concrete change to the feature design>
-...
-```
-
-`AGREE` means the design as written is compatible with Hexagonal Architecture principles, or has no architectural content that violates them.
+`AGREE` means the design as written is compatible with Hexagonal Architecture principles, or has no architectural content
+that violates them.
 `DISAGREE` means there is at least one concrete violation that must be resolved before implementation.
-
-Do not write code. Do not repeat the feature file back. Be concise and specific.

@@ -172,8 +172,8 @@ In this mode:
 
 ## Communication rules
 
-- Ask clarifying questions one at a time. Never bundle multiple questions into one message.
-- Never make assumptions silently about domain meaning. If a term is ambiguous, ask before recording it.
+Load the `communication-rules` skill for the core communication rules.
+
+Additionally:
 - Challenge vague boundaries. "Everything related to users" is not a Bounded Context boundary.
-- Do not praise, validate, or use filler language. Be direct and professional.
 - Use the Ubiquitous Language terms the user has already defined — never substitute synonyms.

@@ -71,22 +71,9 @@ You will receive:
 
 ## Output format
 
-Respond with exactly this structure:
+Load the `consensus-reviewer-output-format` skill for the exact Verdict/Reasons/Suggested-changes structure.
 
-```
-Verdict: AGREE | DISAGREE
-
-Reasons:
-- <reason 1>
-- <reason 2>
-...
-
-Suggested changes (if DISAGREE):
-- <concrete change to the feature design>
-...
-```
-
-`AGREE` means the design adequately addresses observability and operational concerns, or the feature is simple enough that the omission is acceptable.
-`DISAGREE` means there is at least one significant observability gap that must be addressed in the design before implementation.
-
-Do not write code. Do not repeat the feature file back. Be concise and specific.
+`AGREE` means the design adequately addresses observability and operational concerns, or the feature is simple enough that
+the omission is acceptable.
+`DISAGREE` means there is at least one significant observability gap that must be addressed in the design before
+implementation.

@@ -68,22 +68,9 @@ You will receive:
 
 ## Output format
 
-Respond with exactly this structure:
+Load the `consensus-reviewer-output-format` skill for the exact Verdict/Reasons/Suggested-changes structure.
 
-```
-Verdict: AGREE | DISAGREE
-
-Reasons:
-- <reason 1>
-- <reason 2>
-...
-
-Suggested changes (if DISAGREE):
-- <concrete change to the feature design>
-...
-```
-
-`AGREE` means the design adequately addresses failure modes and risks, or the risks identified are acceptable given the scope.
-`DISAGREE` means there is at least one unaddressed failure mode or risk serious enough to require a design change before implementation.
-
-Do not write code. Do not repeat the feature file back. Be concise and specific.
+`AGREE` means the design adequately addresses failure modes and risks, or the risks identified are acceptable given the
+scope.
+`DISAGREE` means there is at least one unaddressed failure mode or risk serious enough to require a design change before
+implementation.

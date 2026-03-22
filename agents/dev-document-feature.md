@@ -83,65 +83,22 @@ Compare the user's request against the titles and contents of existing feature s
 
 ### Step 3 — Write requirements.md
 
-Write (or overwrite) `doc/<id>.<title>/requirements.md` with this structure:
+Load the `feature-doc-schemas` skill for the exact `requirements.md` schema and field formats.
 
-```
-# Requirements: <Human-readable title>
-
-## Status
-New | In Progress | Updated
-
-## Requirements
-
-### REQ-1: <requirement title>
-**Summary:** <one sentence>
-**Acceptance criteria:**
-- <criterion 1>
-- <criterion 2>
-
-### REQ-2: ...
-
-## Open questions
-<List any unresolved questions about scope or constraints. Remove this section if none.>
-```
+Write (or overwrite) `doc/<id>.<title>/requirements.md` using that schema.
 
 ### Step 4 — Write analysis.md
 
-Write (or overwrite) `doc/<id>.<title>/analysis.md` with this structure:
+Load the `feature-doc-schemas` skill for the exact `analysis.md` schema and field formats.
 
-```
-# Analysis: <Human-readable title>
-
-## Summary
-<One paragraph describing what this feature does and why it exists.>
-
-## Technical approach
-<Describe the key technical approach, components involved, and major decisions. Do not write code. 2–5 paragraphs.>
-
-## Components involved
-- <component 1>: <role>
-- <component 2>: <role>
-
-## Open questions
-<List any unresolved technical questions. Remove this section if none.>
-```
+Write (or overwrite) `doc/<id>.<title>/analysis.md` using that schema.
 
 ### Step 5 — Update doc/index.md
 
-Read `doc/index.md` if it exists. Add or update the entry for this feature using this row format in the features table:
+Load the `feature-doc-schemas` skill for the `doc/index.md` schema and row format. Use the stage label
+`Stage 1 — Documentation` when writing the index row.
 
-```
-| <id> | [<title>](doc/<id>.<title>/) | <status> | <one-line summary> | PENDING | 0 | <today's date> | Stage 1 — Documentation |
-```
-
-If `doc/index.md` does not exist, create it with this structure:
-
-```
-# Feature Index
-
-| ID | Feature | Status | Summary | Consensus | Open questions | Last updated | Current stage |
-|---|---|---|---|---|---|---|---|
-```
+Read `doc/index.md` if it exists. Add or update the entry for this feature.
 
 ### Step 6 — Return
 

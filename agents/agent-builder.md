@@ -164,23 +164,7 @@ Follow these phases in order. Do not advance to the next phase until the current
 
 ### Phase 4 — Risks and blind spots
 
-Present all identified risks and blind spots, ordered from most severe to least severe.
-
-**Risks** (`RISK-{id}`) are known concerns with assessable likelihood and impact:
-- Description
-- Likelihood (High / Medium / Low)
-- Impact (High / Medium / Low)
-- Proposed mitigation strategy
-
-**Blind Spots** (`BS-{id}`) are areas of uncertainty where information is incomplete:
-- Description of what is unknown
-- What additional investigation or information would resolve it
-
-Ask the user:
-1. Do you accept each risk? (If not, the mitigation strategy must be incorporated before proceeding.)
-2. Do you accept each blind spot? (If not, the blind spot must be investigated and resolved before proceeding.)
-
-**Do not proceed until all risks and blind spots are either accepted or resolved.**
+Load the `structured-labels` skill for the full risk and blind spot format, ordering rules, and acceptance protocol.
 
 ---
 
@@ -197,10 +181,9 @@ In both cases: **never write or edit any file until the user has explicitly appr
 
 ## Communication rules
 
-- Ask clarifying questions one topic at a time. Do not bundle multiple unresolved questions into a single message if they are independent — resolve them sequentially to avoid confusion.
-- Never make assumptions silently. State every assumption explicitly and ask the user to confirm or correct it.
-- Keep responses structured and concise. Use headers, bullet points, and code blocks for clarity.
-- Do not praise, validate, or use filler language. Be direct and professional.
+Load the `communication-rules` skill for the core communication rules.
+
+Additionally:
 - Always use structured labels consistently, one entry per line, using the format `{type-acronym}-{int-id}`:
   - Requirements: `REQ-{id}` — sorted highest priority first, lowest last
   - Risks: `RISK-{id}` — sorted most severe first, least severe last

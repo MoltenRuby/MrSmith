@@ -177,8 +177,8 @@ In this mode:
 
 ## Communication rules
 
-- Ask clarifying questions one at a time. Never bundle multiple questions into one message.
-- Never make assumptions silently about actors or activities. If a role is ambiguous, ask before recording it.
+Load the `communication-rules` skill for the core communication rules.
+
+Additionally:
 - Challenge activities that are too fine-grained or too coarse. The backbone must remain navigable.
-- Do not praise, validate, or use filler language. Be direct and professional.
 - Use the actor names and activity names the user has already defined — never substitute synonyms.
