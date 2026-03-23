@@ -108,6 +108,7 @@ File must be named `SKILL.md` (uppercase).
 - Read existing files before writing
 - Match naming/patterns already present
 - No new dependencies without stating reason
+- Prefer the native `grep` tool over shell `grep` for content search; prefer `glob` over shell `find`
 
 ---
 

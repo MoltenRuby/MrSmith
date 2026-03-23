@@ -17,20 +17,8 @@ tools:
 permission:
   bash:
     "*": ask
-    # bd data accumulation
-    "bd update *": allow
-    "bd append-notes *": allow
-    "bd remember *": allow
-    "bd close *": allow
-    "bd create *": allow
-    "bd dolt push": allow
-    # bd non-destructive reads
-    "bd ready*": allow
-    "bd show *": allow
-    "bd search *": allow
-    "bd prime*": allow
-    "bd memories*": allow
-    "bd doctor*": allow
+    # bd commands
+    "bd *": allow
     # non-destructive git reads
     "git status*": allow
     "git log*": allow
@@ -47,6 +35,9 @@ permission:
     "git shortlog *": allow
     "git rev-parse *": allow
     "git reflog *": allow
+    # git write ops
+    "git commit *": allow
+    "git add *": allow
     # listing shell ops without file content
     "ls*": allow
     "pwd": allow

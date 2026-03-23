@@ -17,6 +17,22 @@ tools:
 permission:
   bash:
     "*": allow
+    # non-destructive git reads (explicit for documentation; covered by * above)
+    "git status*": allow
+    "git log*": allow
+    "git diff*": allow
+    "git show*": allow
+    "git branch*": allow
+    "git fetch*": allow
+    "git blame *": allow
+    "git grep *": allow
+    "git stash list*": allow
+    "git tag *": allow
+    "git ls-files *": allow
+    "git describe *": allow
+    "git shortlog *": allow
+    "git rev-parse *": allow
+    "git reflog *": allow
   webfetch: allow
 ---
 

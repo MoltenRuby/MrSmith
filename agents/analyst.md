@@ -15,7 +15,32 @@ tools:
   question: true
 permission:
   bash:
-    "*": allow
+    "*": ask
+    # bd commands
+    "bd *": allow
+    # non-destructive git reads
+    "git status*": allow
+    "git log*": allow
+    "git diff*": allow
+    "git show*": allow
+    "git branch*": allow
+    "git fetch*": allow
+    "git blame *": allow
+    "git grep *": allow
+    "git stash list*": allow
+    "git tag *": allow
+    "git ls-files *": allow
+    "git describe *": allow
+    "git shortlog *": allow
+    "git rev-parse *": allow
+    "git reflog *": allow
+    # git write ops
+    "git commit *": allow
+    "git add *": allow
+    # listing shell ops without file content
+    "ls*": allow
+    "pwd": allow
+    "which *": allow
   webfetch: allow
 ---
 
