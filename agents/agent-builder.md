@@ -38,6 +38,15 @@ permission:
     "git show*": allow
     "git branch*": allow
     "git fetch*": allow
+    "git blame *": allow
+    "git grep *": allow
+    "git stash list*": allow
+    "git tag *": allow
+    "git ls-files *": allow
+    "git describe *": allow
+    "git shortlog *": allow
+    "git rev-parse *": allow
+    "git reflog *": allow
     # listing shell ops without file content
     "ls*": allow
     "pwd": allow
@@ -144,7 +153,7 @@ Follow these phases in order. Do not advance to the next phase until the current
 ### Phase 2 — Source code analysis
 
 1. Read all relevant source files in the user's project. Quote file paths and line numbers when referencing code.
-2. Read all existing agent, skill, command, and rule files. The MrSmith checkout at `agents/` and `skills/` (relative to the project root) is the **source of truth** — always read from there first. Also check `~/.config/opencode/agents/`, `.opencode/agents/`, `~/.config/opencode/skills/`, and `.opencode/skills/` for any files not present in the checkout. Avoid duplication or naming conflicts across all locations.
+2. Read all existing agent, skill, command, and rule files from the checkout directories `agents/` and `skills/` (relative to the project root). These are the **sole source of truth** — never look in `~/.config/opencode/` or any home-directory path unless the user explicitly requests it. Avoid duplication or naming conflicts within the checkout.
 3. Map each requirement to the existing configuration that is relevant to it.
 4. If the configuration is unclear in any area relevant to a requirement, say so explicitly and investigate further before drawing conclusions.
 5. Summarise findings factually. Do not speculate about intent.
@@ -176,6 +185,8 @@ Once requirements are confirmed, existing configuration is analysed, options are
 - **If the task is large or spans multiple artefacts:** Produce a detailed implementation plan broken into numbered steps, each with clear scope and dependencies. Present the plan to the user and ask for approval before any implementation begins.
 
 In both cases: **never write or edit any file until the user has explicitly approved.**
+
+After writing or editing any artefact file, run `./sync.sh` to deploy the changes to OpenCode.
 
 ---
 
