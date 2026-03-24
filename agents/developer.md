@@ -35,10 +35,10 @@ permission:
     "which *": allow
   task:
     "*": deny
-    "dev-story-mapper": allow
-    "dev-ddd-strategic": allow
-    "dev-feature-mapper": allow
-    "dev-document-feature": allow
+    "design-story-mapper": allow
+    "design-ddd-strategic": allow
+    "design-feature-mapper": allow
+    "design-document-feature": allow
     "dev-architect": allow
     "dev-ddd": allow
     "dev-tdd": allow
@@ -86,11 +86,11 @@ story-map.md is absent or incomplete for doc/<id>.<title>/.
 Missing or incomplete:
 - <list each failing check, or "File not found" if absent>
 
-Please run @dev-story-mapper to complete the story mapping workshop
+Please run @design-story-mapper to complete the story mapping workshop
 before returning to @developer.
 ```
 
-Stop. Do not proceed to Stage 1 until the user has run `@dev-story-mapper`, confirmed the file is written, and asks to continue.
+Stop. Do not proceed to Stage 1 until the user has run `@design-story-mapper`, confirmed the file is written, and asks to continue.
 
 Update the "Current stage" column in `doc/index.md` to "Stage 1 — Documentation" before proceeding.
 
@@ -98,13 +98,13 @@ Update the "Current stage" column in `doc/index.md` to "Stage 1 — Documentatio
 
 ### Stage 1 — Feature documentation
 
-Invoke `dev-document-feature` via the Task tool as a sub-task.
+Invoke `design-document-feature` via the Task tool as a sub-task.
 
 Pass it:
 - The user's feature description or request
 - The path to the `doc/` directory (always `doc/` relative to the project root)
 
-`dev-document-feature` will:
+`design-document-feature` will:
 - Scan `doc/index.md` and existing `doc/<id>.<title>/` subfolders to determine if this is a new or existing feature
 - Create or update `doc/<id>.<title>/requirements.md` and `doc/<id>.<title>/analysis.md`
 - Update `doc/index.md`
@@ -143,7 +143,7 @@ strategic-design.md is absent or incomplete for doc/<id>.<title>/.
 Missing or incomplete:
 - <list each failing check>
 
-Please run @dev-ddd-strategic to complete the strategic design
+Please run @design-ddd-strategic to complete the strategic design
 workshop before returning to @developer.
 ```
 
@@ -163,7 +163,7 @@ Check whether `doc/<id>.<title>/feature-map.md` exists.
 
 **If `feature-map.md` is valid:** proceed to Stage 2.
 
-**If `feature-map.md` is absent or invalid:** invoke `dev-feature-mapper` via the Task tool as a sub-task.
+**If `feature-map.md` is absent or invalid:** invoke `design-feature-mapper` via the Task tool as a sub-task.
 
 Pass it:
 - The full contents of `doc/<id>.<title>/requirements.md`

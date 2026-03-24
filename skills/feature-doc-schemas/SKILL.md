@@ -73,7 +73,7 @@ The row format for each feature entry is:
 
 The stage label is determined by the calling agent:
 - `@analyst` uses: `Stage 1b — Strategic Design Validation`
-- `@dev-document-feature` uses: `Stage 1 — Documentation`
+- `@design-document-feature` uses: `Stage 1 — Documentation`
 
 ---
 

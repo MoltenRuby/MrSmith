@@ -157,7 +157,7 @@ Summary:
 - Walking skeleton tasks: <N>
 - Release tiers: <N>
 
-Next step: run @dev-ddd-strategic for strategic design, then switch to @developer to begin the implementation flow.
+Next step: run @design-ddd-strategic for strategic design, then switch to @developer to begin the implementation flow.
 ```
 
 ---

@@ -121,7 +121,7 @@ Once requirements are confirmed, code is analysed, options are evaluated, and al
      Requirements and analysis written to doc/<id>.<title>/.
 
      Next steps:
-     1. Run @dev-ddd-strategic to complete the strategic design
+     1. Run @design-ddd-strategic to complete the strategic design
         workshop for this feature.
      2. Then switch to @developer to begin the implementation flow.
      ```
