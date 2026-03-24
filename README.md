@@ -88,3 +88,10 @@ The script prints a per-file summary and a final count of copied vs. skipped fil
 
 1. Clone this repository.
 2. Run `./sync.sh` to populate `~/.config/opencode/` with all artefacts.
+
+
+# Cocoindex integration
+export COCOINDEX_CODE_EMBEDDING_MODEL="sentence-transformers/nomic-ai/CodeRankEmbed"
+ccc init
+ccc index
+ccc search dude where is my car?
