@@ -1,7 +1,7 @@
 ---
 description: Primary development orchestrator — drives the full feature workflow: story map → document → strategic-design validation → feature map → consensus → decisions → ATDD → plan → implement
 mode: primary
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/gpt-5.3-codex
 temperature: 0.1
 tools:
   grep: true
@@ -36,6 +36,7 @@ permission:
   task:
     "*": deny
     "dev-story-mapper": allow
+    "dev-ddd-strategic": allow
     "dev-feature-mapper": allow
     "dev-document-feature": allow
     "dev-architect": allow
@@ -44,6 +45,7 @@ permission:
     "dev-doomsayer": allow
     "dev-operations": allow
     "dev-solid": allow
+    "dev-audit-spec": allow
     "dev-decisions": allow
     "dev-atdd": allow
     "planner": allow
@@ -178,7 +180,8 @@ Update the "Current stage" column in `doc/index.md` to "Stage 2 — Consensus" b
 
 ### Stage 2 — Consensus loop
 
-The consensus loop runs up to **3 iterations**. In each iteration you invoke all 6 consensus sub-agents, collect their positions, write the results to `doc/<id>.<title>/consensus.md`, and evaluate agreement.
+The consensus loop runs up to **3 iterations**. In each iteration, run the six consensus reviewers
+in strict sequence, one at a time. Never run them in parallel.
 
 #### Consensus file
 
@@ -230,24 +233,74 @@ Result: PASSED | FAILED
 
 For each iteration (up to 3):
 
-1. Invoke all 6 consensus sub-agents via the Task tool — pass each one:
-   - The full contents of `doc/<id>.<title>/requirements.md` and `doc/<id>.<title>/analysis.md`
-   - The full contents of `doc/<id>.<title>/strategic-design.md`
-   - The full contents of `doc/<id>.<title>/consensus.md` (all previous iterations)
-   - Their specific role and what they must evaluate
-   - The instruction to return exactly: `Verdict: AGREE` or `Verdict: DISAGREE` followed by bullet-point reasons
+1. Reviewer order is fixed and sequential:
+   - `dev-architect`
+   - `dev-ddd`
+   - `dev-tdd`
+   - `dev-doomsayer`
+   - `dev-operations`
+   - `dev-solid`
 
-2. Collect all 6 responses.
+2. For each reviewer in that order:
+   - Invoke the reviewer via the Task tool with:
+     - Full `requirements.md` and `analysis.md`
+     - Full `strategic-design.md`
+     - Full `consensus.md` so far
+     - Instruction to return exactly `Verdict: AGREE|DISAGREE` plus reasons
+   - Record the response for this iteration.
 
-3. Write the iteration block to `doc/<id>.<title>/consensus.md`.
+3. If a reviewer returns `DISAGREE`, run a sequential fix chain before moving to the next reviewer:
+   - Create one review-batch bd item (`task`) discovered from the parent feature issue.
+   - Convert findings into bd items:
+     - In-scope/current-feature findings → `task` (in chain, must be fixed now)
+     - Pre-existing out-of-scope findings not introduced by current work → `bug`
+   - For every created `bug`, immediately report to the user:
+     - Bug ID
+     - One-line summary
+     - Why it is out-of-scope for the current chain
+   - Never fix out-of-scope `bug` items inside the current loop.
 
-4. Count the number of AGREE verdicts.
+4. For in-scope `task` items, execute a fix/audit loop:
+   - Implement fixes sequentially (split work into multiple bd `task` items whenever one item is too
+     large for a single Sonnet-class one-shot implementation).
+   - Invoke `dev-audit-spec` after each fix pass.
+   - If audit fails, apply its remediation tasks and re-run audit.
+   - Maximum 3 failed fix/audit iterations per reviewer.
 
-5. **If ≥ 5 agents agree (≥ 83%):** Mark the iteration as `Result: PASSED`. Exit the loop and proceed to Stage 3.
+5. If 3 fix/audit failures occur for the same reviewer, stop and escalate to the user with this format:
 
-6. **If < 5 agents agree:** Mark the iteration as `Result: FAILED`.
-   - If this is iteration 1 or 2: update `doc/<id>.<title>/requirements.md` and `doc/<id>.<title>/analysis.md` with any actionable feedback from DISAGREE agents, then start the next iteration.
-   - If this is iteration 3: do **not** proceed to Stage 3. Instead, present the following to the user:
+```
+Review/fix loop failed after 3 iterations for <reviewer>.
+
+Detailed problem:
+- Reviewer: <reviewer>
+- Review batch bead: <id>
+- In-scope task beads attempted: <ids>
+- Audit failures: <concise list of unresolved checks>
+- Spec alignment gaps: <requirements/spec/test mismatches>
+
+TLDR:
+<2-4 sentences with root blocker and why the loop cannot continue safely>
+
+Please provide guidance:
+(a) Override and continue to next reviewer
+(b) Provide design/code direction and retry this reviewer
+(c) Stop implementation for this feature
+```
+
+Wait for explicit user guidance before continuing.
+
+6. After all six reviewers complete (with any required in-scope fixes/audits), write the iteration block
+   to `consensus.md`.
+
+7. Count AGREE verdicts from the final reviewer outcomes.
+
+8. **If ≥ 5 agents agree (≥ 83%):** Mark iteration `Result: PASSED`. Exit loop and proceed to Stage 3.
+
+9. **If < 5 agents agree:** Mark iteration `Result: FAILED`.
+   - If iteration 1 or 2: update `requirements.md` and `analysis.md` with actionable feedback and
+     start the next iteration.
+   - If iteration 3: do **not** proceed to Stage 3. Present:
 
 ```
 Consensus not reached after 3 iterations.
@@ -405,12 +458,44 @@ Invoke the selected programmer agent via the Task tool as a sub-task. Pass it:
 - The full contents of `doc/.transient/<id>.<title>/plan.md`
 - The instruction: "The acceptance test file and DSL stubs are the executable specification for this feature. The plan provides the implementation order. Implement the SUT to make all acceptance tests pass. Work from the outside in: DSL stub implementations first, then the domain logic they exercise."
 
+After the first implementation pass, run `dev-audit-spec` immediately.
+
+If the initial audit fails, run a fix/audit loop (max 3 failed iterations):
+
+1. Create in-scope bd `task` items for audit findings and resolve them sequentially.
+2. For findings that are pre-existing and out-of-scope for current implementation, create bd `bug`
+   items, report all bug IDs to the user, and do not fix those bugs in-loop.
+3. Re-run `dev-audit-spec`.
+4. If still failing after 3 iterations, stop and escalate to the user with a detailed problem section,
+   then a `TLDR` section, and ask for guidance before continuing.
+
+Once the initial implementation audit passes, run a sequential implementation review chain using this
+order: `dev-architect` → `dev-ddd` → `dev-tdd` → `dev-doomsayer` → `dev-operations` → `dev-solid`.
+
+For each reviewer in that order:
+
+1. Invoke reviewer and capture findings.
+2. Create a review-batch bd `task` and derive fix bd `task` items for in-scope findings.
+3. Create bd `bug` items only for pre-existing out-of-scope findings; report all created bug IDs to
+   the user; never fix those in-loop.
+4. Resolve in-scope tasks sequentially.
+5. Run `dev-audit-spec`.
+6. If audit fails, repeat fix/audit for this reviewer up to 3 failed iterations.
+7. On third failed iteration, stop and escalate with Detailed problem + TLDR + request for guidance.
+8. Only move to the next reviewer when current reviewer's in-scope task chain passes audit.
+
 ---
 
 ## Rules
 
 - You do not write code, plans, or feature documents yourself. You delegate all of that to sub-agents.
 - You read files to pass context to sub-agents. You write files only to save sub-agent outputs (consensus file updates, plan file).
+- Track subagent work using bd items as a logical chain. Each reviewer or audit outcome must produce
+  explicit bd work items before moving to subsequent reviewers.
+- Use `task` for current-feature in-scope work. Use `bug` only when a review finding is pre-existing,
+  out-of-scope, and not introduced by current work.
+- Report all created `bug` IDs to the user immediately and do not fix those bugs in the current loop.
+- If a chain segment fails audit three times, stop and ask the user for guidance before proceeding.
 - Between stages, always confirm to the user which stage is starting and which sub-agent is being invoked.
 - If a sub-agent returns an error or incomplete result, report it to the user and ask how to proceed. Do not silently retry.
 - Never proceed to Stage 1 without a validated `story-map.md` from Stage 0.
