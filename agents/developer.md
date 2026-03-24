@@ -261,11 +261,14 @@ For each iteration (up to 3):
    - Never fix out-of-scope `bug` items inside the current loop.
 
 4. For in-scope `task` items, execute a fix/audit loop:
-   - Implement fixes sequentially (split work into multiple bd `task` items whenever one item is too
-     large for a single Sonnet-class one-shot implementation).
-   - Invoke `dev-audit-spec` after each fix pass.
-   - If audit fails, apply its remediation tasks and re-run audit.
-   - Maximum 3 failed fix/audit iterations per reviewer.
+    - Implement fixes sequentially (split work into multiple bd `task` items whenever one item is too
+      large for a single Sonnet-class one-shot implementation).
+    - After every code change, run the full project test suite and require it to pass before
+      continuing.
+    - Never disable, skip, or suppress tests to make the suite pass.
+    - Invoke `dev-audit-spec` after each fix pass.
+    - If audit fails, apply its remediation tasks and re-run audit.
+    - Maximum 3 failed fix/audit iterations per reviewer.
 
 5. If 3 fix/audit failures occur for the same reviewer, stop and escalate to the user with this format:
 
@@ -465,8 +468,10 @@ If the initial audit fails, run a fix/audit loop (max 3 failed iterations):
 1. Create in-scope bd `task` items for audit findings and resolve them sequentially.
 2. For findings that are pre-existing and out-of-scope for current implementation, create bd `bug`
    items, report all bug IDs to the user, and do not fix those bugs in-loop.
-3. Re-run `dev-audit-spec`.
-4. If still failing after 3 iterations, stop and escalate to the user with a detailed problem section,
+3. After each code change, run the full project test suite and require all tests to pass.
+4. Never disable, skip, or suppress tests to force a pass.
+5. Re-run `dev-audit-spec`.
+6. If still failing after 3 iterations, stop and escalate to the user with a detailed problem section,
    then a `TLDR` section, and ask for guidance before continuing.
 
 Once the initial implementation audit passes, run a sequential implementation review chain using this
@@ -479,10 +484,12 @@ For each reviewer in that order:
 3. Create bd `bug` items only for pre-existing out-of-scope findings; report all created bug IDs to
    the user; never fix those in-loop.
 4. Resolve in-scope tasks sequentially.
-5. Run `dev-audit-spec`.
-6. If audit fails, repeat fix/audit for this reviewer up to 3 failed iterations.
-7. On third failed iteration, stop and escalate with Detailed problem + TLDR + request for guidance.
-8. Only move to the next reviewer when current reviewer's in-scope task chain passes audit.
+5. After every code change, run the full project test suite and require all tests to pass.
+6. Never disable, skip, or suppress tests to force a pass.
+7. Run `dev-audit-spec`.
+8. If audit fails, repeat fix/audit for this reviewer up to 3 failed iterations.
+9. On third failed iteration, stop and escalate with Detailed problem + TLDR + request for guidance.
+10. Only move to the next reviewer when current reviewer's in-scope task chain passes audit.
 
 ---
 
@@ -496,6 +503,9 @@ For each reviewer in that order:
   out-of-scope, and not introduced by current work.
 - Report all created `bug` IDs to the user immediately and do not fix those bugs in the current loop.
 - If a chain segment fails audit three times, stop and ask the user for guidance before proceeding.
+- After every code change in any fix loop, run the full project test suite. All tests must pass.
+- No tests may be disabled, skipped, or suppressed to satisfy the test gate.
+- The user may override this test gate only at escalation time after three failed iterations.
 - Between stages, always confirm to the user which stage is starting and which sub-agent is being invoked.
 - If a sub-agent returns an error or incomplete result, report it to the user and ask how to proceed. Do not silently retry.
 - Never proceed to Stage 1 without a validated `story-map.md` from Stage 0.

@@ -80,12 +80,18 @@ When inputs are missing, proceed with what is available and report missing input
    - Verify strategic design boundaries and language are respected.
    - Verify acceptance tests and DSL remain authoritative and aligned with specifications.
 
-3. **Out-of-scope bug classification**
+3. **Full-suite test integrity audit**
+   - Verify the full project test suite was executed after each code change in the current chain
+     segment.
+   - Verify all tests passed.
+   - Verify no tests were disabled, skipped, or suppressed to achieve a pass.
+
+4. **Out-of-scope bug classification**
    - If an issue appears pre-existing and not introduced by the current chain, classify as out-of-scope
      candidate bug and report it clearly.
    - Never ask to fix out-of-scope bugs within current in-scope chain.
 
-4. **Remediation task generation**
+5. **Remediation task generation**
    - For every in-scope failure, provide concrete remediation tasks suitable for bd `task` creation.
    - If remediation is too large for one Sonnet-class one-shot implementation, split into multiple
      tasks and state split rationale.
@@ -107,6 +113,11 @@ Beads audit:
 Specification alignment:
 - PASS|FAIL: <requirement/spec/test alignment finding>
 
+Full-suite test integrity:
+- PASS|FAIL: <full-suite execution evidence>
+- PASS|FAIL: <all tests passing evidence>
+- PASS|FAIL: <no disabled/skipped/suppressed tests evidence>
+
 Out-of-scope bugs (do not fix in-loop):
 - <candidate title> — <why pre-existing/out-of-scope> — Suggested type: bug
 
@@ -125,6 +136,7 @@ Summary:
 Rules:
 - If any blocker-level in-scope failure exists, verdict must be `FAIL`.
 - If no in-scope failures exist, verdict must be `PASS`.
+- Any failure in full-suite test integrity is blocker-level and must produce `FAIL`.
 - Keep reasons concise and evidence-based.
 - Do not modify files.
 - Do not run implementation commands.
