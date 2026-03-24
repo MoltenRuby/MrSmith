@@ -112,6 +112,59 @@ File must be named `SKILL.md` (uppercase).
 
 ---
 
+## Test Design
+
+### No tautological tests
+
+A tautological test asserts the implementation rather than the behaviour. It has no diagnostic value
+and breaks when code is restructured even if behaviour is unchanged.
+
+Forbidden patterns:
+
+- Asserting a mock was called when the call is an internal detail, not an observable output or
+  boundary side-effect (e.g. `mock.assert_called_once_with(...)`, `expect(spy).toHaveBeenCalledWith(...)`)
+- Asserting return values that merely echo constructor arguments with no transformation
+- Tests whose only assertion is the absence of an exception thrown by a mock
+
+Required: every test must assert observable behaviour — a return value, a visible state change, an
+event emitted, or a boundary call that constitutes the feature's contract.
+
+### Mocks only at architectural boundaries
+
+Mocks, stubs, and spies are legitimate **only** at architectural boundaries — points where code
+crosses out of the process or into infrastructure it does not own.
+
+Mock here (approved boundaries):
+
+- **I/O** — file system reads/writes, stdin/stdout/stderr
+- **CLI** — subprocess invocations, shell commands
+- **Network / web service calls** — HTTP clients, gRPC stubs, WebSocket connections
+- **Databases / data access** — SQL, NoSQL, ORM sessions, query builders
+- **Message queues / event buses** — Kafka, RabbitMQ, SQS, pub/sub producers/consumers
+- **Clock / time** — `datetime.now()`, `Date.now()`, `time.time()`, system timers
+- **Randomness** — `random`, `uuid`, `crypto.randomBytes`, any non-deterministic value source
+- **External services** — payment gateways, email senders, SMS providers, third-party APIs
+
+Do not mock:
+
+- Domain services, use cases, application services
+- In-process repositories backed by in-memory data structures — use a real in-memory fake instead
+- Pure functions and value objects
+- Internal collaborators within the same module or package
+
+### Fakes over mocks
+
+When a dependency is an interface or abstract type, provide a concrete in-memory fake that satisfies
+the contract. Fakes are first-class code: tested, interface-enforcing, and enabling fast integration
+tests without mocks.
+
+### No monkey-patching of internal collaborators
+
+Do not use patching/monkey-patching (e.g. `unittest.mock.patch`, `jest.spyOn`, `sinon.stub`) to
+replace non-boundary collaborators. This creates invisible coupling between tests and implementation.
+
+---
+
 ## Issue Tracking with bd
 
 **Use bd for ALL issue tracking. NO markdown TODOs or external trackers.**
