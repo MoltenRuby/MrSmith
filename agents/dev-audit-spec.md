@@ -62,7 +62,6 @@ You may receive:
   - `specifications.md` (if present)
   - `consensus.md` (if present)
   - `decisions.md` (if present)
-  - `doc/.transient/<id>.<title>/plan.md` (if present)
 - Acceptance test file path and DSL stub path (if available)
 
 When inputs are missing, proceed with what is available and report missing inputs under blind spots.
@@ -71,27 +70,33 @@ When inputs are missing, proceed with what is available and report missing input
 
 ## Audit responsibilities
 
-1. **Beads acceptance audit**
-   - For each in-scope task bead, verify implemented changes satisfy the bead's acceptance intent.
+1. **Beads acceptance audit (per-bead loop)**
+   - For the current in-scope task bead, verify implemented changes satisfy the bead's acceptance intent.
    - Mark each as pass/fail with evidence.
 
-2. **Specification alignment audit**
+2. **Per-bead progression gate audit**
+   - Verify that progression to the next bead is blocked until:
+     - required tests pass,
+     - and the current bead passes spec audit.
+   - If evidence of next-bead advancement exists before these gates, report blocker failure.
+
+3. **Specification alignment audit**
    - Verify code and tests align with requirements and analysis.
    - Verify strategic design boundaries and language are respected.
    - Verify acceptance tests and DSL remain authoritative and aligned with specifications.
 
-3. **Full-suite test integrity audit**
+4. **Full-suite test integrity audit**
    - Verify the full project test suite was executed after each code change in the current chain
      segment.
    - Verify all tests passed.
    - Verify no tests were disabled, skipped, or suppressed to achieve a pass.
 
-4. **Out-of-scope bug classification**
+5. **Out-of-scope bug classification**
    - If an issue appears pre-existing and not introduced by the current chain, classify as out-of-scope
      candidate bug and report it clearly.
    - Never ask to fix out-of-scope bugs within current in-scope chain.
 
-5. **Remediation task generation**
+6. **Remediation task generation**
    - For every in-scope failure, provide concrete remediation tasks suitable for bd `task` creation.
    - If remediation is too large for one Sonnet-class one-shot implementation, split into multiple
      tasks and state split rationale.
@@ -112,6 +117,10 @@ Beads audit:
 
 Specification alignment:
 - PASS|FAIL: <requirement/spec/test alignment finding>
+
+Per-bead progression gate:
+- PASS|FAIL: <tests passed before progression evidence>
+- PASS|FAIL: <audit passed before progression evidence>
 
 Full-suite test integrity:
 - PASS|FAIL: <full-suite execution evidence>

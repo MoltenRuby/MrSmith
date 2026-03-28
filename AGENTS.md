@@ -189,6 +189,11 @@ bd dolt push                 # Push to remote
 - ✅ Always `--json` for programmatic use
 - ✅ Link discovered work with `--deps discovered-from:<id>`
 - ✅ Include issue ID in commits: `git commit -m "Fix thing (MrSmith-0e0)"`
+- ✅ For feature execution loops, use `doc/.transient/beads.md` as the control pointer
+- ✅ `doc/.transient/beads.md` must contain exactly one non-empty ID (task or epic)
+- ✅ If the ID is a task, it must be ready/unblocked before implementation begins
+- ✅ If the ID is an epic, pick ready child tasks by priority first (`0` highest), then stable ID
+- ✅ Do not move to next bead until current bead passes required tests and spec audit
 - ❌ No `bd edit` — use `bd update` with flags
 - ❌ No markdown TODO lists
 
