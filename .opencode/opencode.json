@@ -1,0 +1,59 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "ccc": {
+      "type": "remote",
+      "url": "http://127.0.0.1:49344"
+    }
+  },
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "bd *": "allow",
+      "git status*": "allow",
+      "git log*": "allow",
+      "git diff*": "allow",
+      "git show*": "allow",
+      "git branch*": "allow",
+      "git fetch*": "allow",
+      "git blame *": "allow",
+      "git grep *": "allow",
+      "git stash list*": "allow",
+      "git tag *": "allow",
+      "git ls-files *": "allow",
+      "git describe *": "allow",
+      "git shortlog *": "allow",
+      "git rev-parse *": "allow",
+      "git reflog *": "allow",
+      "git commit *": "allow",
+      "git add *": "allow",
+      "git merge *": "allow",
+      "git rebase *": "allow",
+      "npm install*": "allow",
+      "npm run *": "allow",
+      "npm test*": "allow",
+      "npm build*": "allow",
+      "yarn install*": "allow",
+      "yarn run *": "allow",
+      "yarn test*": "allow",
+      "yarn build*": "allow",
+      "pip install*": "allow",
+      "pip list*": "allow",
+      "python -m pytest*": "allow",
+      "cargo build*": "allow",
+      "cargo test*": "allow",
+      "cargo check*": "allow",
+      "make*": "allow",
+      "ls*": "allow",
+      "pwd": "allow",
+      "which *": "allow",
+      "find *": "allow",
+      "grep *": "allow",
+      "curl -X GET*": "allow",
+      "curl -X get*": "allow",
+      "mkdir -p*": "allow",
+      "cp -f*": "allow",
+      "mv -f*": "allow"
+    }
+  }
+}

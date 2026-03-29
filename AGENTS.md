@@ -165,6 +165,38 @@ replace non-boundary collaborators. This creates invisible coupling between test
 
 ---
 
+---
+
+## Agent Autonomy & Permissions
+
+All agents inherit centralized permission defaults from `.opencode/opencode.json`:
+
+### Safe operations (auto-allow)
+
+Agents execute these without prompting:
+
+- **Issue tracking**: `bd *`
+- **Git**: read ops (`status`, `log`, `diff`, `show`, `branch`, `fetch`, `blame`, `grep`, `stash`, `tag`, `ls-files`, `describe`, `shortlog`, `rev-parse`, `reflog`); write ops (`commit`, `add`, `merge`, `rebase`)
+- **Package managers**: `npm install`, `npm run`, `npm test`, `npm build`; `yarn *`; `pip install`; `cargo build`, `cargo test`, `cargo check`
+- **Build**: `make *`
+- **File navigation**: `ls`, `pwd`, `which`, `find`, `grep`
+- **HTTP**: `curl -X GET` (read-only)
+- **File operations**: `mkdir -p`, `cp -f`, `mv -f` (non-destructive)
+
+### Gated operations (ask-first)
+
+All other bash commands require user approval. This includes:
+
+- Destructive operations: `rm`, `rm -rf`
+- Remote git writes: `git push`, `git push --force`
+- System commands with side effects
+
+### Per-agent overrides
+
+Individual agents may override these defaults in their frontmatter `permission` field. For example, `plan` agent may deny `edit` globally while `build` allows it.
+
+---
+
 ## Issue Tracking with bd
 
 **Use bd for ALL issue tracking. NO markdown TODOs or external trackers.**
