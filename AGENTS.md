@@ -177,7 +177,7 @@ Agents execute these without prompting:
 
 - **Issue tracking**: `bd *`
 - **Git**: read ops (`status`, `log`, `diff`, `show`, `branch`, `fetch`, `blame`, `grep`, `stash`, `tag`, `ls-files`, `describe`, `shortlog`, `rev-parse`, `reflog`); write ops (`commit`, `add`, `merge`, `rebase`)
-- **Package managers**: `npm install`, `npm run`, `npm test`, `npm build`; `yarn *`; `pip install`; `cargo build`, `cargo test`, `cargo check`
+- **Package managers**: `npm install`, `npm run`, `npm test`, `npm build`; `yarn *`; `pip install`; `cargo build`, `cargo test`, `cargo check`; `go build`, `go test`
 - **Build**: `make *`
 - **File navigation**: `ls`, `pwd`, `which`, `find`, `grep`
 - **HTTP**: `curl -X GET`, `curl -X HEAD`, `curl -X OPTIONS`, `curl -s`, `curl -i`, `curl -I`, `curl -L`, `curl -H`, `curl -A`, `curl -b`, `curl -u`, `curl --*` (read-only; no POST/PUT/DELETE/PATCH)
