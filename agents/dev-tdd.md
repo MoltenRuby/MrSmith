@@ -71,6 +71,17 @@ Your ATDD concerns are:
 - **[ATDD] Acceptance criteria as executable specs:** Are the acceptance criteria in the requirements written at the business behaviour level, such that they could be directly expressed as DSL function calls in the host language without translation?
 - **[ATDD] Domain-level scenario language:** Scenarios must describe behaviour at the domain model level using Ubiquitous Language terms — Aggregate behaviour, Domain Events, and business state transitions. Scenarios must never describe transport or infrastructure behaviour (e.g. "the endpoint returns 200", "the database row is inserted", "the ORM saves the record"). A scenario that can only be understood by reading the implementation is a violation.
 
+## Design-flow test plan conformance criteria
+
+Your design-flow conformance concerns are:
+- **[TDD] Small-test purity:** The design must identify small tests for business logic that do not rely on
+  I/O, clock/time, or external services.
+- **[TDD] Medium-test boundary limit:** The design must identify medium tests that integrate with exactly
+  one boundary dependency (I/O or clock/time or external service).
+- **[TDD] Large-test cap:** The design must cap multi-boundary large integration tests to at most one
+  scenario per feature unless explicitly approved by the user.
+- **[TDD] Test sequencing:** The design should define execution order as small → medium → large.
+
 ---
 
 ## Input

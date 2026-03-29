@@ -48,17 +48,22 @@ Feature Mapping
 mapper                                 feature                 strategic               
 mapper
 
-                                             [Stage 1d]
-                                             Beads Planning
-                                             @planner
-                                             - create/reuse epic
-                                             - create ordered task beads
-                                             - link dependencies
-                                             - write doc/.transient/beads.md
+                                              [Stage 1d]
+                                              Beads Planning
+                                              @planner
+                                              - create/reuse epic
+                                              - create ordered task beads
+                                              - link dependencies
+                                              - write doc/.transient/beads.md
+
+                                              [Stage 1e]
+                                              Implementation Readiness Gate
+                                              @developer
+                                              - tools/subagents/skills/rules/permissions check
 
                     [Stage 2 Loop]      [Stage 3]             [Stage 4]
-                    Consensus Review ─→ Decisions ──────────→ ATDD
-                    (6 reviewers)        Recording             (Scenarios → DSL → Tests)
+                     Consensus Review ─→ Decisions ──────────→ ATDD
+                     (6 reviewers)        Recording             (Scenarios → DSL → Tests)
 
                                                       [Stage 5 Loop]
                                                       Beads-driven Implementation +
@@ -85,7 +90,32 @@ mapper
 - **Outputs:**
   - `doc/<id>.<title>/requirements.md`
   - `doc/<id>.<title>/analysis.md`
+  - `doc/<id>.<title>/architecture-rules.md`
+  - `doc/<id>.<title>/test-plan.md`
+  - `doc/<id>.<title>/constraints.md`
   - `doc/index.md` row update
+
+#### Architecture rules contract (mandatory)
+- Separate pure business logic from side-effect adapters.
+- Keep I/O, clock/time, and external service calls outside business logic.
+- Define plugin extension points and plugin interface contracts explicitly.
+- Document dependency direction rules (allowed and forbidden).
+- State testability implications of the chosen boundaries.
+
+#### Test plan contract (mandatory)
+- Test plan must define exactly three categories:
+  - Small tests (pure business logic only; no I/O, no clock/time, no external service calls)
+  - Medium tests (integration tests with exactly one boundary dependency)
+  - Large tests (multi-boundary integration)
+- Large tests are capped at **at most one** scenario per feature unless user explicitly overrides.
+- Test plan must define execution order (small → medium → large) and pass criteria.
+
+#### Constraints contract (mandatory)
+- `constraints.md` must be produced during design stage and kept current.
+- It must cover at least: functional, technical, operational, security/compliance, and delivery constraints.
+- Constraints must be referenced during beads planning and per-bead implementation decisions.
+- If a constraint blocks an implementation approach, planner/developer must record and select an alternative
+  that remains within approved constraints.
 
 ### Stage 1b — Strategic Design Validation
 - **Agent:** `@design-ddd-strategic`
@@ -109,9 +139,23 @@ mapper
   2. If no epic exists, create one to regroup implementation work.
   3. Create task beads in logical implementation order.
   4. Create dependency links between those tasks.
-  5. Write `doc/.transient/beads.md` with exactly one ID:
-     - epic ID for multi-task work, or
-     - task ID for single-task work.
+   5. Write `doc/.transient/beads.md` with exactly one ID:
+      - epic ID for multi-task work, or
+      - task ID for single-task work.
+
+### Stage 1e — Implementation Readiness Gate (After planning, before consensus)
+- **Orchestrator:** `@developer`
+- **Inputs:**
+  - `architecture-rules.md`
+  - `test-plan.md`
+  - `constraints.md`
+  - planned beads chain from `doc/.transient/beads.md`
+- **Responsibilities:**
+  1. Confirm required tools for planned implementation are available.
+  2. Confirm whether specialized subagents are needed for any bead.
+  3. Confirm whether additional skills/rules are needed.
+  4. Confirm required permissions are configured to avoid implementation interruption.
+  5. Record readiness status and blockers before Stage 2 starts.
 
 ---
 
@@ -127,6 +171,8 @@ mapper
 - **Output:** `doc/<id>.<title>/consensus.md`
 - **Success criteria:** at least 5/6 reviewers agree.
 - **Failure mode:** fix design issues and retry; max 3 iterations unless user overrides.
+- **Hard gate:** all required tests must pass at the end of each consensus iteration.
+- **If tests fail:** fix tests and restart the current consensus loop iteration.
 
 ---
 
@@ -180,6 +226,15 @@ For each selected bead:
 5. Run `@dev-audit-spec` against feature docs and requirements.
 6. Move to next bead only after tests pass and audit passes.
 
+#### Required compile/test operations source of truth
+- The design-stage `test-plan.md` must include a **Project validation operations** table with:
+  - project/component name,
+  - build/compile command,
+  - required test command(s),
+  - scope notes.
+- During per-bead implementation, `@developer` must execute/verify these operations as the hard gate.
+- If a project does not require compile/build, the table must explicitly use `N/A`.
+
 ---
 
 ## 🎯 Key Principles Embedded in the Flow
@@ -202,6 +257,9 @@ doc/
 ├── <id>.<title>/
 │   ├── requirements.md
 │   ├── analysis.md
+│   ├── architecture-rules.md
+│   ├── test-plan.md
+│   ├── constraints.md
 │   ├── story-map.md                # optional
 │   ├── strategic-design.md
 │   ├── feature-map.md
@@ -222,7 +280,8 @@ doc/
 2. Run `@design-ddd-strategic`
 3. Run `@design-feature-mapper`
 4. Run `@planner` (epic/tasks/dependencies + `beads.md`)
-5. Proceed to Stage 2
+5. Run Stage 1e readiness gate
+6. Proceed to Stage 2
 
 ### Complex feature
 1. Run `@design-story-mapper`
@@ -230,7 +289,8 @@ doc/
 3. Run `@design-ddd-strategic`
 4. Run `@design-feature-mapper`
 5. Run `@planner` (epic/tasks/dependencies + `beads.md`)
-6. Proceed to Stage 2
+6. Run Stage 1e readiness gate
+7. Proceed to Stage 2
 
 Then `@developer` orchestrates Stage 2 through Stage 5.
 

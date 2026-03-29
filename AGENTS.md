@@ -194,6 +194,9 @@ bd dolt push                 # Push to remote
 - ✅ If the ID is a task, it must be ready/unblocked before implementation begins
 - ✅ If the ID is an epic, pick ready child tasks by priority first (`0` highest), then stable ID
 - ✅ Do not move to next bead until current bead passes required tests and spec audit
+- ✅ If implementation is blocked by a recurring/high-iteration issue, invoke `@debug-analyst` for root-cause analysis
+- ✅ If the resulting fix is trivial, proceed without additional user intervention
+- ✅ If resolution requires a pivot in strategy, plan, or technology, stop and ask the user for guidance
 - ❌ No `bd edit` — use `bd update` with flags
 - ❌ No markdown TODO lists
 

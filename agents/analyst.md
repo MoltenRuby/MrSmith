@@ -112,8 +112,13 @@ Once requirements are confirmed, code is analysed, options are evaluated, and al
   2. Check `doc/index.md` for the highest existing feature ID. Assign the next integer. If `doc/index.md` does not exist, assign ID `1`.
   3. Write `doc/<id>.<title>/requirements.md` and `doc/<id>.<title>/analysis.md`, then create or update `doc/index.md`.
 
-     Load the `feature-doc-schemas` skill for the exact file schemas, field formats, and index row format.
-     Use the stage label `Stage 1b — Strategic Design Validation` when writing the `doc/index.md` row.
+  3.5. Also write:
+      - `doc/<id>.<title>/architecture-rules.md`
+      - `doc/<id>.<title>/test-plan.md`
+      - `doc/<id>.<title>/constraints.md`
+
+      Load the `feature-doc-schemas` skill for the exact file schemas, field formats, and index row format.
+      Use the stage label `Stage 1b — Strategic Design Validation` when writing the `doc/index.md` row.
 
   4. Tell the user:
 

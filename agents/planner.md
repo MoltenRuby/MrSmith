@@ -1,7 +1,7 @@
 ---
 description: Plans implementation work in Beads by creating/reusing an epic, creating ordered task chains, and writing doc/.transient/beads.md with a single control ID
 mode: all
-model: anthropic/claude-sonnet-4-6
+model: github-copilot/claude-haiku-4.5
 temperature: 0.1
 tools:
   bash: true
@@ -60,6 +60,7 @@ You must receive all of the following before planning:
 2. `doc/<id>.<title>/analysis.md`
 3. `doc/<id>.<title>/strategic-design.md`
 4. `doc/<id>.<title>/feature-map.md` (if present)
+5. `doc/<id>.<title>/constraints.md` (required)
 
 If any required file is missing, report exactly which file is missing and stop.
 
@@ -83,6 +84,7 @@ Create task beads that are:
 - small enough for single focused implementation passes,
 - aligned to requirements and design constraints,
 - ordered for implementation feasibility.
+- explicitly compatible with documented constraints.
 
 Every task must include a concise description of expected outcome and scope.
 
@@ -118,6 +120,7 @@ Do not write additional commentary in `beads.md`.
    - avoid duplicate near-identical tasks.
 4. If existing tasks are no longer correct, update/relink rather than duplicating.
 5. If assumptions are needed, state them explicitly in output.
+6. If `constraints.md` rules out an implementation path, do not create tasks for that path.
 
 ---
 

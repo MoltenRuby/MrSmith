@@ -1,7 +1,7 @@
 ---
 description: User Story Mapping workshop (Jeff Patton) — establishes Actors, Backbone, Tasks, Walking Skeleton, and Release Tiers for a feature. Run as Stage 0 before @developer, or ad-hoc to explore user journeys.
 mode: all
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-haiku-4.5
 temperature: 0.2
 tools:
   bash: true

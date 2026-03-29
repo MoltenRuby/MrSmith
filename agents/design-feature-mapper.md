@@ -1,7 +1,7 @@
 ---
 description: Feature Mapping workshop (Industrial Logic) — maps user stories to concrete examples for a feature. Run as Stage 1c after strategic design and before ATDD, or ad-hoc to explore concrete scenarios.
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-haiku-4.5
 temperature: 0.2
 hidden: true
 tools:

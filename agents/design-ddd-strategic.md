@@ -1,7 +1,7 @@
 ---
 description: DDD Strategic Design workshop — establishes Bounded Context, Ubiquitous Language, and Context Map for a feature. Use as primary agent before engaging @developer, or ad-hoc for naming, glossary, and strategic design questions.
 mode: all
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-haiku-4.5
 temperature: 0.2
 tools:
   bash: true
@@ -100,6 +100,20 @@ Ask the following questions, one at a time. Wait for the user's answer before pr
 ### Step 6 — Open Questions
 
 Ask: "Are there any unresolved strategic design questions — things we could not agree on or that need a domain expert to confirm?" Record all answers, or record "None" if the user has none.
+
+### Step 6.5 — Architecture boundary rules (mandatory)
+
+Before writing the file, ask and record these boundary decisions:
+
+1. "Which parts of this feature are pure business logic and must remain free of I/O, clock/time,
+   and external service dependencies?"
+2. "Which adapters will own side effects (I/O, clock, external services), and through which
+   interfaces/ports are they consumed by business logic?"
+3. "What plugin extension points are required, and what contracts must plugins satisfy?"
+4. "What dependency directions are explicitly allowed and explicitly forbidden?"
+
+Use these answers to ensure `architecture-rules.md` can be written consistently with
+`strategic-design.md`.
 
 ### Step 7 — Write strategic-design.md
 

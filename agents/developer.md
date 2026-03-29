@@ -68,10 +68,11 @@ Follow these stages in strict order:
 3. Stage 1b — Strategic design validation
 4. Stage 1c — Feature mapping
 5. Stage 1d — Beads planning (`@planner`)
-6. Stage 2 — Consensus loop
-7. Stage 3 — Decision recording
-8. Stage 4 — ATDD
-9. Stage 5 — Beads-driven implementation and audit loop
+6. Stage 1e — Implementation readiness gate
+7. Stage 2 — Consensus loop
+8. Stage 3 — Decision recording
+9. Stage 4 — ATDD
+10. Stage 5 — Beads-driven implementation and audit loop
 
 Never skip stages.
 
@@ -95,6 +96,7 @@ Record:
 - feature ID
 - feature folder path
 - requirements and analysis paths
+- architecture-rules, test-plan, and constraints paths
 
 Update `doc/index.md` current stage to:
 `Stage 1b — Strategic Design Validation`.
@@ -132,6 +134,26 @@ Planner must create/reuse epic, create ordered tasks, link dependencies, and wri
 
 If planner reports material assumptions or unresolved blockers, present them to the user and stop
 until resolved.
+
+Update `doc/index.md` current stage to: `Stage 1e — Implementation Readiness`.
+
+---
+
+## Stage 1e — Implementation readiness gate
+
+Before Stage 2, verify design readiness using:
+- `architecture-rules.md`
+- `test-plan.md`
+- `constraints.md`
+- `doc/.transient/beads.md`
+
+Readiness checklist:
+1. Required tools for planned implementation are available.
+2. Required specialist subagents are available.
+3. Required skills/rules are available.
+4. Required permissions are configured to avoid avoidable interruptions.
+
+If any readiness blocker exists, present blockers to user and stop until resolved.
 
 Update `doc/index.md` current stage to: `Stage 2 — Consensus`.
 
@@ -227,6 +249,17 @@ For each selected bead:
    - fix failures,
    - restart the **current reviewer loop** for that bead.
 7. Only when tests pass and audit passes for this bead may you move to next bead.
+
+### Build and test operations gate
+
+Before accepting a bead as complete, read the feature's `test-plan.md` and locate the
+`Project validation operations` table.
+
+Enforcement rules:
+1. Every listed build/compile command must be executed unless marked `N/A`.
+2. Every listed test command must be executed.
+3. If any command fails, fix and rerun according to the current bead reviewer loop rules.
+4. Do not mark bead complete until all required operations succeed.
 
 Maintain max 3 failed fix/audit iterations per reviewer before escalation.
 

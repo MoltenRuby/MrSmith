@@ -1,6 +1,7 @@
 ---
 description: Investigates the root cause of bugs through recursive evidence gathering — reads source code, instruments the program with debug prints, executes it, searches public issue trackers and forums for matching documented bugs (version-confirmed), and loops until a definitive, evidence-backed root cause is established
 mode: all
+model: github-copilot/claude-haiku-4.5
 temperature: 0.1
 steps: 15
 tools:
