@@ -31,14 +31,20 @@ mapper
                                               - link dependencies
                                               - write doc/.transient/beads.md
 
-                                              [Stage 1e]
-                                              Implementation Readiness Gate
-                                              @developer
-                                              - tools/subagents/skills/rules/permissions check
+                                               [Stage 1e]
+                                               Implementation Readiness Gate
+                                               @developer
+                                               - tools/subagents/skills/rules/permissions check
 
-                    [Stage 2 Loop]      [Stage 3]             [Stage 4]
-                     Consensus Review ─→ Decisions ──────────→ ATDD
-                     (6 reviewers)        Recording             (Scenarios → DSL → Tests)
+                                               [Stage 1f] ← NEW
+                                               Acceptance Criteria Definition
+                                               @design-acceptance-criteria
+                                               - synthesize all context
+                                               - write acceptance-criteria.md
+
+                     [Stage 2 Loop]      [Stage 3]             [Stage 4]
+                      Consensus Review ─→ Decisions ──────────→ ATDD
+                      (6 reviewers)        Recording             (Scenarios → DSL → Tests)
 
                                                        [Stage 5 Loop]
                                                        Beads-driven Implementation +
@@ -144,6 +150,26 @@ mapper
   5. Confirm required permissions are configured to avoid implementation interruption.
   6. Record readiness status and blockers.
 - **If any readiness blocker exists:** present blockers to user and stop until resolved.
+
+### Stage 1f — Acceptance Criteria Definition (NEW)
+- **Agent:** `@design-acceptance-criteria` (model: `github-copilot/claude-haiku-4.5`)
+- **Mandatory inputs:**
+  1. `requirements.md` — business outcomes and REQ-* definitions
+  2. `analysis.md` — implementation context
+  3. `SOP.md` — environment, services, deployment targets
+  4. `strategic-design.md` — bounded context, ubiquitous language
+  5. `test-plan.md` — test scope categories, project validation operations
+  6. `constraints.md` — technical, security, operational boundaries
+  7. `feature-map.md` — concrete examples with specific values
+- **Output:** `doc/<id>.<title>/acceptance-criteria.md`
+- **Responsibilities:**
+  1. Synthesize acceptance outcomes from requirements
+  2. Extract environment requirements from SOP
+  3. Translate technical constraints into measurable criteria
+  4. Map concrete examples (feature-map) to test scenarios
+  5. Document tool/library requirements for testing
+  6. Validate complete coverage (all REQs and examples covered)
+- **Why this stage:** All context is now available (concrete examples from feature-map, environment from SOP, technical bounds from test-plan/constraints). Criteria inform consensus review and ground ATDD work.
 
 ---
 
@@ -252,6 +278,7 @@ doc/
 │   ├── story-map.md                        # optional
 │   ├── strategic-design.md
 │   ├── feature-map.md
+│   ├── acceptance-criteria.md              # NEW: mandatory in Stage 1f
 │   ├── consensus.md
 │   ├── decisions.md
 │   ├── specifications.md
@@ -265,21 +292,23 @@ doc/
 ## 🚀 Starting a New Feature
 
 ### Simple feature
-1. Run `@design-document-feature` → produces architecture-rules, test-plan, constraints
+1. Run `@design-document-feature` → produces architecture-rules, test-plan, constraints, SOP
 2. Run `@design-ddd-strategic` (with mandatory architecture boundary questions)
-3. Run `@design-feature-mapper`
+3. Run `@design-feature-mapper` → produces feature-map
 4. Run `@planner` (epic/tasks/dependencies + `beads.md`)
-5. Run Stage 1e readiness gate
-6. Proceed to Stage 2 (consensus)
+5. Run Stage 1e readiness gate → verify environment
+6. Run `@design-acceptance-criteria` → produces acceptance-criteria
+7. Proceed to Stage 2 (consensus)
 
 ### Complex feature
 1. Run `@design-story-mapper`
-2. Run `@design-document-feature` → produces architecture-rules, test-plan, constraints
+2. Run `@design-document-feature` → produces architecture-rules, test-plan, constraints, SOP
 3. Run `@design-ddd-strategic` (with mandatory architecture boundary questions)
-4. Run `@design-feature-mapper`
+4. Run `@design-feature-mapper` → produces feature-map
 5. Run `@planner` (epic/tasks/dependencies + `beads.md`)
-6. Run Stage 1e readiness gate
-7. Proceed to Stage 2 (consensus)
+6. Run Stage 1e readiness gate → verify environment
+7. Run `@design-acceptance-criteria` → produces acceptance-criteria
+8. Proceed to Stage 2 (consensus)
 
 Then `@developer` orchestrates Stage 2 through Stage 5.
 
@@ -347,6 +376,7 @@ This workflow is **consensus-driven, test-gated, constraint-aware, and beads-exe
 | MrSmith-umk.8 | Debug escalation policy | AGENTS.md rules for debug-analyst, trivial-fix autonomy, pivot guidance |
 | MrSmith-3mu | Flow artifact alignment | Analyst/developer agents updated with new artefact references |
 | MrSmith-pft | Environment SOP integration | SOP.md template and mandatory Stage 1a artifact; readiness gate checklist updated |
+| MrSmith-dyv | Acceptance criteria stage | New Stage 1f; @design-acceptance-criteria agent; acceptance-criteria.md schema in feature-doc-schemas |
 
 ---
 

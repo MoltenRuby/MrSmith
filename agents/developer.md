@@ -39,6 +39,7 @@ permission:
     "design-ddd-strategic": allow
     "design-feature-mapper": allow
     "design-document-feature": allow
+    "design-acceptance-criteria": allow
     "dev-architect": allow
     "dev-ddd": allow
     "dev-tdd": allow
@@ -69,10 +70,11 @@ Follow these stages in strict order:
 4. Stage 1c — Feature mapping
 5. Stage 1d — Beads planning (`@planner`)
 6. Stage 1e — Implementation readiness gate
-7. Stage 2 — Consensus loop
-8. Stage 3 — Decision recording
-9. Stage 4 — ATDD
-10. Stage 5 — Beads-driven implementation and audit loop
+7. Stage 1f — Acceptance criteria definition
+8. Stage 2 — Consensus loop
+9. Stage 3 — Decision recording
+10. Stage 4 — ATDD
+11. Stage 5 — Beads-driven implementation and audit loop
 
 Never skip stages.
 
@@ -154,6 +156,35 @@ Readiness checklist:
 4. Required permissions are configured to avoid avoidable interruptions.
 
 If any readiness blocker exists, present blockers to user and stop until resolved.
+
+Update `doc/index.md` current stage to: `Stage 1f — Acceptance Criteria`.
+
+---
+
+## Stage 1f — Acceptance criteria definition
+
+Invoke `design-acceptance-criteria` with all design documents:
+- `requirements.md`
+- `analysis.md`
+- `SOP.md`
+- `strategic-design.md`
+- `test-plan.md`
+- `constraints.md`
+- `feature-map.md`
+
+Agent will produce `acceptance-criteria.md` that synthesizes:
+- Business outcomes from requirements
+- Environment setup from SOP
+- Technical criteria from test-plan and constraints
+- Concrete scenarios from feature-map
+
+Validate that `acceptance-criteria.md`:
+- Covers all REQ-* from requirements.md
+- Includes all concrete examples from feature-map.md
+- Documents all required services and environment setup
+- Specifies all technical, security, and operational criteria
+
+If acceptance criteria are incomplete or ambiguous, address them with user before proceeding to Stage 2.
 
 Update `doc/index.md` current stage to: `Stage 2 — Consensus`.
 

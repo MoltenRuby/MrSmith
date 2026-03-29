@@ -1,6 +1,6 @@
 ---
 name: feature-doc-schemas
-description: Canonical schemas for requirements.md, analysis.md, and doc/index.md — exact structure, section headings, and field formats required by the feature documentation workflow
+description: Canonical schemas for requirements.md, analysis.md, acceptance-criteria.md, and doc/index.md — exact structure, section headings, and field formats required by the feature documentation workflow
 license: MIT
 compatibility: opencode
 ---
@@ -172,6 +172,108 @@ Write `doc/<id>.<title>/constraints.md` using this exact structure:
 
 ---
 
+## acceptance-criteria.md schema
+
+Write `doc/<id>.<title>/acceptance-criteria.md` using this exact structure:
+
+```
+# Acceptance Criteria: <Human-readable title>
+
+## Business Criteria
+
+**Feature is complete when:**
+- <outcome 1 — concrete, measurable>
+- <outcome 2 — concrete, measurable>
+
+**In-scope:**
+- <behaviour 1>
+- <behaviour 2>
+
+**Out-of-scope:**
+- <explicitly excluded behaviour 1>
+- <explicitly excluded behaviour 2>
+
+## Environment Requirements
+
+**Services required:**
+- <service 1> (from SOP.md)
+- <service 2>
+
+**Deployment targets:**
+- Development: <Docker Compose file reference>
+- Testing: <testing environment reference>
+- Production: <if applicable>
+
+**Setup time estimate:** <X minutes>
+
+**Validation:**
+- [ ] All services from SOP.md validation checklist pass
+- [ ] Network connectivity verified
+- [ ] Credentials/secrets loaded
+
+## Technical Criteria
+
+**Performance:**
+- <measurable performance criterion 1>
+
+**Reliability:**
+- <reliability criterion 1 — error handling, retries, etc.>
+
+**Security:**
+- <security criterion 1 — from constraints.md>
+
+**Scalability/Capacity:**
+- <criterion if applicable>
+
+**Other technical requirements:**
+- <criterion>
+
+## Test Scenarios
+
+| # | Scenario | Given | When | Then | Priority | Notes |
+|---|----------|-------|------|------|----------|-------|
+| 1 | <concrete example from feature-map> | <precondition> | <action> | <expected outcome> | must-have | <rationale or reference> |
+| 2 | ... | ... | ... | ... | ... | ... |
+
+**Scenario sourcing:**
+- All scenarios are derived from concrete examples in `feature-map.md`
+- Each scenario includes specific values (not placeholders)
+- Priority levels: must-have, should-have, nice-to-have
+
+## Tool & Library Requirements
+
+**Testing framework:**
+- <pytest, vitest, jest, etc.>
+
+**Test fixtures:**
+- <fixture 1 from SOP — e.g., database container setup>
+- <fixture 2>
+
+**Mocking strategy:**
+- <from architecture-rules.md — which boundaries are mocked>
+
+**CI/CD requirements:**
+- <build/test commands to validate>
+- <required environment for pipeline>
+
+## Validation Checklist
+
+Before declaring acceptance criteria complete:
+
+- [ ] All REQ-* from `requirements.md` covered by scenarios
+- [ ] All concrete examples from `feature-map.md` have test scenarios
+- [ ] All SOP.md environment setup requirements are testable
+- [ ] All technical criteria from test-plan.md are included
+- [ ] All security/compliance constraints from constraints.md are included
+- [ ] Scenarios use concrete values (no placeholders)
+- [ ] Each scenario is independently readable
+- [ ] Reviewers agree on criteria completeness before consensus stage
+
+---
+```
+
+---
+
 ## doc/index.md schema
 
 If `doc/index.md` does not exist, create it with this structure first:
@@ -192,6 +294,7 @@ The row format for each feature entry is:
 The stage label is determined by the calling agent:
 - `@analyst` uses: `Stage 1b — Strategic Design Validation`
 - `@design-document-feature` uses: `Stage 1 — Documentation`
+- `@design-acceptance-criteria` uses: `Stage 1f — Acceptance Criteria`
 
 ---
 
