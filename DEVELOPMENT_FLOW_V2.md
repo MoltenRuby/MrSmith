@@ -68,6 +68,7 @@ mapper
   - `doc/<id>.<title>/architecture-rules.md` ← **NEW (mandatory)**
   - `doc/<id>.<title>/test-plan.md` ← **NEW (mandatory)**
   - `doc/<id>.<title>/constraints.md` ← **NEW (mandatory)**
+  - `doc/<id>.<title>/SOP.md` ← **NEW (mandatory)**: Environment setup, naming conventions, tool rules
   - `doc/index.md` row update
 
 #### Architecture rules contract (mandatory)
@@ -94,6 +95,13 @@ mapper
 - Must cover at least: functional, technical, operational, security/compliance, and delivery constraints.
 - Constraints must be referenced during beads planning and per-bead implementation decisions.
 - If a constraint blocks an implementation approach, planner/developer must record and select an alternative that remains within approved constraints.
+
+#### SOP contract (mandatory)
+- `SOP.md` (Standard Operating Procedures) defines environment setup and tool access rules.
+- Must cover: service naming conventions, database access rules, networking/ports, logging, secrets management, data persistence, and deployment targets.
+- Must include a validation checklist to verify stack is correctly configured before implementation begins.
+- Use provided template from `doc/SOP-TEMPLATE.md` as a starting point; customize per-feature.
+- Reference `SOP.md` during Stage 1e (Readiness Gate) to confirm all required tools/ports are available.
 
 ### Stage 1b — Strategic Design Validation
 - **Agent:** `@design-ddd-strategic` (model: `github-copilot/claude-haiku-4.5`)
@@ -130,10 +138,11 @@ mapper
 - **Orchestrator:** `@developer`
 - **Mandatory checks before proceeding to Stage 2:**
   1. Confirm required tools for planned implementation are available.
-  2. Confirm whether specialized subagents are needed for any bead.
-  3. Confirm whether additional skills/rules are needed.
-  4. Confirm required permissions are configured to avoid implementation interruption.
-  5. Record readiness status and blockers.
+  2. Review `SOP.md` validation checklist and verify all environment services are running.
+  3. Confirm whether specialized subagents are needed for any bead.
+  4. Confirm whether additional skills/rules are needed.
+  5. Confirm required permissions are configured to avoid implementation interruption.
+  6. Record readiness status and blockers.
 - **If any readiness blocker exists:** present blockers to user and stop until resolved.
 
 ---
@@ -231,6 +240,7 @@ For each selected bead:
 ```
 doc/
 ├── index.md
+├── SOP-TEMPLATE.md                         # Template for per-feature SOP.md
 ├── <id>.<title>/
 │   ├── requirements.md
 │   ├── analysis.md
@@ -238,6 +248,7 @@ doc/
 │   ├── test-plan.md                        # NEW: mandatory in Stage 1a
 │   │   └── [Project validation operations] # NEW table in test-plan
 │   ├── constraints.md                      # NEW: mandatory in Stage 1a
+│   ├── SOP.md                              # NEW: mandatory in Stage 1a
 │   ├── story-map.md                        # optional
 │   ├── strategic-design.md
 │   ├── feature-map.md
@@ -335,6 +346,7 @@ This workflow is **consensus-driven, test-gated, constraint-aware, and beads-exe
 | MrSmith-umk.6 | Model migration | All 6 design/debug/planner agents migrated to claude-haiku-4.5 |
 | MrSmith-umk.8 | Debug escalation policy | AGENTS.md rules for debug-analyst, trivial-fix autonomy, pivot guidance |
 | MrSmith-3mu | Flow artifact alignment | Analyst/developer agents updated with new artefact references |
+| MrSmith-pft | Environment SOP integration | SOP.md template and mandatory Stage 1a artifact; readiness gate checklist updated |
 
 ---
 
