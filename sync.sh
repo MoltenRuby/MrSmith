@@ -51,7 +51,7 @@ if [[ -d "${REPO_DIR}/skills" ]]; then
     while IFS= read -r -d '' file; do
         rel="${file#"${REPO_DIR}/skills/"}"
         sync_file "$file" "${OPENCODE_DIR}/skills/${rel}"
-    done < <(find "${REPO_DIR}/skills" -name "SKILL.md" -print0)
+    done < <(find "${REPO_DIR}/skills" \( -name "SKILL.md" -o -name "*.sh" \) -print0)
 fi
 
 # ── Commands ──────────────────────────────────────────────────────────────────

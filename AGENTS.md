@@ -109,6 +109,7 @@ File must be named `SKILL.md` (uppercase).
 - Match naming/patterns already present
 - No new dependencies without stating reason
 - Prefer the native `grep` tool over shell `grep` for content search; prefer `glob` over shell `find`
+- For semantic/conceptual file discovery when you don't know the path, load the `copilot-search` skill
 
 ---
 

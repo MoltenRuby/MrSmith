@@ -1,11 +1,18 @@
 ---
 description: Orchestrates Stages 0–1d design workflow (story mapping → documentation → strategic design → feature mapping → planning). Guides user through feature complexity classification and coordinates specialized design subagents.
-mode: subagent
+mode: primary
 model: github-copilot/claude-haiku-4.5
 temperature: 0.2
 permission:
   bash:
-    "bd *": allow
+    "bd ready*": allow
+    "bd create*": allow
+    "bd update*": allow
+    "bd close*": allow
+    "bd list*": allow
+    "bd show*": allow
+    "bd search*": allow
+    "bd prime*": allow
     "git status*": allow
     "git log*": allow
     "git diff*": allow
@@ -53,6 +60,7 @@ Follow this pipeline strictly:
    - Run `@design-ddd-strategic` (Stage 1c: Strategic Design)
    - Run `@design-feature-mapper` (Stage 1c continued: Feature Mapping)
    - Run `@planner` (Stage 1d: Planning + Beads)
+   - Run `@design-implementation-setup` (Stage 1e: Implementation Scaffolding)
 
    **For complex features:**
    - Run `@design-story-mapper` (Stage 0–1a: User Story Mapping)
@@ -60,6 +68,7 @@ Follow this pipeline strictly:
    - Run `@design-ddd-strategic` (Stage 1c: Strategic Design)
    - Run `@design-feature-mapper` (Stage 1c continued: Feature Mapping)
    - Run `@planner` (Stage 1d: Planning + Beads)
+   - Run `@design-implementation-setup` (Stage 1e: Implementation Scaffolding)
 
 4. **Track artefacts:** After each subagent completes, note the stage label
    and artefacts produced:
@@ -71,12 +80,20 @@ Follow this pipeline strictly:
    - `@design-feature-mapper` produces: concrete feature mappings and
      scenarios
    - `@planner` produces: `beads.md` (epic + ordered tasks + dependencies)
+   - `@design-implementation-setup` produces:
+     `.opencode/skills/<feature>-constraints/SKILL.md`,
+     `.opencode/skills/<feature>-test-operations/SKILL.md`,
+     `.opencode/skills/<feature>-environment/SKILL.md`,
+     `.opencode/agents/<feature>-developer.md`
 
 5. **Summarize and handoff:** After all subagents complete:
    - List all artefacts created (paths and stage labels)
-   - Confirm: "Design phase complete. All Stage 0–1d artefacts ready."
+   - Confirm: "Design phase complete. All Stage 0–1d artefacts ready.
+     Feature agent `@<feature>-developer` and 3 skills scaffolded in `.opencode/`."
    - Offer handoff: "Ready for Stage 1e (readiness gate) and Stage 2
-     (consensus review). Shall I invoke @developer to begin Stage 1e?"
+     (consensus review). Shall I invoke @developer to begin Stage 1e?
+     The feature-specific developer agent `@<feature>-developer` is
+     available for Stage 5 implementation."
 
 ---
 
