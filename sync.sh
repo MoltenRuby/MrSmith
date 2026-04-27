@@ -71,6 +71,29 @@ if [[ -f "${REPO_DIR}/AGENTS.md" ]]; then
     sync_file "${REPO_DIR}/AGENTS.md" "${OPENCODE_DIR}/AGENTS.md"
 fi
 
+# ── VS Code skill symlinks (.agents/skills/) ──────────────────────────────────
+# VS Code Copilot reads skills from .agents/skills/<name>/SKILL.md natively.
+# We symlink each skills/<name> directory there so skills are shared with zero
+# duplication. See doc/agent-coexistence-design.md for rationale.
+if [[ -d "${REPO_DIR}/skills" ]]; then
+    echo ""
+    echo "VS Code skill symlinks (.agents/skills/)"
+    VSCODE_SKILLS_DIR="${REPO_DIR}/.agents/skills"
+    mkdir -p "$VSCODE_SKILLS_DIR"
+    while IFS= read -r -d '' skill_dir; do
+        skill_name="$(basename "$skill_dir")"
+        link="${VSCODE_SKILLS_DIR}/${skill_name}"
+        # Relative target: ../../skills/<name>
+        target="../../skills/${skill_name}"
+        if [[ -L "$link" ]] && [[ "$(readlink "$link")" == "$target" ]]; then
+            log_skipped "$link -> $target"
+        else
+            ln -sf "$target" "$link"
+            log_copied "$link -> $target"
+        fi
+    done < <(find "${REPO_DIR}/skills" -mindepth 1 -maxdepth 1 -type d -print0)
+fi
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo ""
 echo "────────────────────────────────────────"
