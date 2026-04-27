@@ -34,14 +34,14 @@ sync_file() {
     fi
 }
 
-# ── Agents ────────────────────────────────────────────────────────────────────
-if [[ -d "${REPO_DIR}/agents" ]]; then
+# ── OpenCode Agents (agents/opencode/ → ~/.config/opencode/agents/) ───────────
+if [[ -d "${REPO_DIR}/agents/opencode" ]]; then
     echo ""
-    echo "Agents"
+    echo "OpenCode Agents"
     while IFS= read -r -d '' file; do
-        rel="${file#"${REPO_DIR}/agents/"}"
+        rel="${file#"${REPO_DIR}/agents/opencode/"}"
         sync_file "$file" "${OPENCODE_DIR}/agents/${rel}"
-    done < <(find "${REPO_DIR}/agents" -name "*.md" -print0)
+    done < <(find "${REPO_DIR}/agents/opencode" -name "*.md" -print0)
 fi
 
 # ── Skills ────────────────────────────────────────────────────────────────────

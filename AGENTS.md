@@ -39,7 +39,8 @@ No automated tests for this artefact repo. Test by syncing to opencode, running 
 
 | Type | Location | Naming |
 |------|----------|--------|
-| Agent | `agents/<name>.md` | kebab-case → `@<name>` |
+| OpenCode Agent | `agents/opencode/<name>.md` | kebab-case → `@<name>` |
+| VS Code Agent | `agents/vscode/<name>.agent.md` | kebab-case → VS Code agent name |
 | Skill | `skills/<name>/SKILL.md` | dir matches `name` in frontmatter |
 | Command | `commands/<name>.md` | kebab-case → `/<name>` |
 | Rule | `AGENTS.md` (root) | fixed name |
