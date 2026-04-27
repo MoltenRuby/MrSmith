@@ -112,14 +112,24 @@ Load the `feature-doc-schemas` skill for the exact `constraints.md` schema and f
 
 Write (or overwrite) `doc/<id>.<title>/constraints.md` using that schema.
 
-### Step 8 — Update doc/index.md
+### Step 8 — Write SOP.md
+
+Load the `feature-doc-schemas` skill for the exact `SOP.md` schema and field formats.
+
+Write (or overwrite) `doc/<id>.<title>/SOP.md` using that schema.
+
+Write `Status: draft` at the top. Infer services, ports, environment variable names, and deployment
+targets from the feature description and requirements. Use TBD for any values that are not known
+at design time. Do not write real credentials or secret values.
+
+### Step 9 — Update doc/index.md
 
 Load the `feature-doc-schemas` skill for the `doc/index.md` schema and row format. Use the stage label
 `Stage 1 — Documentation` when writing the index row.
 
 Read `doc/index.md` if it exists. Add or update the entry for this feature.
 
-### Step 9 — Return
+### Step 10 — Return
 
 Return:
 - The path to `requirements.md`
@@ -127,6 +137,7 @@ Return:
 - The path to `architecture-rules.md`
 - The path to `test-plan.md`
 - The path to `constraints.md`
+- The path to `SOP.md`
 - The assigned feature ID and subfolder name
 - A one-paragraph summary of what was documented
 
@@ -138,3 +149,4 @@ Return:
 - Never create files outside `doc/`.
 - Do not ask clarifying questions — document based on what you have been given. If information is insufficient for a section, write "TBD".
 - Do not write code in any documentation file.
+- Write SOP.md with `Status: draft`. All service names, ports, and environment variable names are provisional at design time.

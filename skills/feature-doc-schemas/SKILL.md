@@ -1,6 +1,6 @@
 ---
 name: feature-doc-schemas
-description: Canonical schemas for requirements.md, analysis.md, acceptance-criteria.md, and doc/index.md — exact structure, section headings, and field formats required by the feature documentation workflow
+description: Canonical schemas for requirements.md, analysis.md, SOP.md, acceptance-criteria.md, and doc/index.md — exact structure, section headings, and field formats required by the feature documentation workflow
 license: MIT
 compatibility: opencode
 ---
@@ -169,6 +169,58 @@ Write `doc/<id>.<title>/constraints.md` using this exact structure:
 ## Open questions
 - <Question>
 ```
+
+---
+
+## SOP.md schema
+
+Write `doc/<id>.<title>/SOP.md` using this exact structure:
+
+```
+# Environment Standard Operating Procedures (SOP)
+
+**Feature:** `<feature-id>.<title>`
+**Status:** draft
+
+## Services required
+
+| Service | Type | Container name pattern | Internal port | External port |
+|---------|------|----------------------|---------------|---------------|
+| <service name> | <e.g. PostgreSQL, Redis> | <feature-id>-<service>-<tier> | <port> | TBD |
+
+## Environment variables
+
+| Variable | Service | Purpose | Required |
+|----------|---------|---------|----------|
+| `<FEATURE_ID>_<SERVICE>_<SETTING>` | <service> | <purpose> | yes/no |
+
+## Deployment targets
+
+- Development: `docker-compose.<feature-id>.yml` (TBD)
+- Testing: TBD
+- Production: TBD
+
+## Tool restrictions
+
+Agents working on this feature MUST NOT run database CLI tools (psql, mysql, redis-cli) directly
+on the host. Use `docker exec` or container-based clients only.
+
+## Validation checklist
+
+- [ ] All service names follow `<feature-id>-<service>-<tier>` pattern
+- [ ] All environment variables follow `<FEATURE_ID>_*` prefix
+- [ ] Secrets are NOT committed to Git
+```
+
+**Schema rules:**
+
+- `Status` must be `draft` on creation. Only mark `active` after the full Docker Compose stack is
+  operational.
+- Services table is required. If no services are known at design time, add one row with all values
+  as TBD.
+- Deployment targets section is required. Use TBD for unknown targets.
+- Tool restrictions section is required verbatim.
+- Validation checklist is required verbatim.
 
 ---
 
