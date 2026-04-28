@@ -1,7 +1,7 @@
 ---
 description: Primary development orchestrator — drives feature workflow through design validation,
   consensus, ATDD, and beads-driven implementation with per-bead audit gates
-model: GPT-5.3 Codex (GitHub Copilot)
+model: Claude Sonnet (GitHub Copilot)
 tools: ['read', 'edit', 'search/codebase', 'agent']
 user-invocable: true
 ---
