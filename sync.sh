@@ -4,7 +4,7 @@
 # OpenCode: copies agents/opencode/, skills/, commands/, AGENTS.md
 #           → ~/.config/opencode/
 #
-# VS Code:  copies agents/vscode/*.agent.md → .github/agents/
+# VS Code:  copies agents/vscode/*.agent.md → ~/.copilot/agents/ (global, all workspaces)
 #           symlinks skills/<name> → .agents/skills/<name>  (read natively by VS Code)
 #
 # Behaviour: merge — existing files not tracked here are left untouched.
@@ -75,18 +75,17 @@ if [[ -f "${REPO_DIR}/AGENTS.md" ]]; then
     sync_file "${REPO_DIR}/AGENTS.md" "${OPENCODE_DIR}/AGENTS.md"
 fi
 
-# ── VS Code Agents (agents/vscode/ → .github/agents/) ────────────────────────
-# VS Code Copilot reads custom agents from .github/agents/ in the workspace.
-# Files stay in the repo; this section copies them to the expected location.
-# Guard: only copy *.agent.md — never copy plain .md files to this directory
-#        (they would be picked up with wrong frontmatter).
+# ── VS Code Agents (agents/vscode/ → ~/.copilot/agents/) ─────────────────────
+# VS Code Copilot reads user-profile agents from ~/.copilot/agents/ — available
+# globally across all workspaces.
+# Guard: only copy *.agent.md — never copy plain .md files here.
 if [[ -d "${REPO_DIR}/agents/vscode" ]]; then
     echo ""
-    echo "VS Code Agents (.github/agents/)"
-    mkdir -p "${REPO_DIR}/.github/agents"
+    echo "VS Code Agents (~/.copilot/agents/)"
+    mkdir -p "${HOME}/.copilot/agents"
     while IFS= read -r -d '' file; do
         rel="${file#"${REPO_DIR}/agents/vscode/"}"
-        sync_file "$file" "${REPO_DIR}/.github/agents/${rel}"
+        sync_file "$file" "${HOME}/.copilot/agents/${rel}"
     done < <(find "${REPO_DIR}/agents/vscode" -name "*.agent.md" -print0)
 fi
 
