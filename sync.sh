@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
-# sync.sh — Copy opencode artefacts from this repo into ~/.config/opencode/
+# sync.sh — Deploy artefacts from this repo to OpenCode and VS Code.
 #
-# Behaviour: merge — files present in this repo are added/updated in the target.
-#            Files already in ~/.config/opencode/ that are NOT in this repo are
-#            left untouched.
+# OpenCode: copies agents/opencode/, skills/, commands/, AGENTS.md
+#           → ~/.config/opencode/
+#
+# VS Code:  copies agents/vscode/*.agent.md → .github/agents/
+#           symlinks skills/<name> → .agents/skills/<name>  (read natively by VS Code)
+#
+# Behaviour: merge — existing files not tracked here are left untouched.
 #
 # Usage: ./sync.sh
 
@@ -69,6 +73,21 @@ if [[ -f "${REPO_DIR}/AGENTS.md" ]]; then
     echo ""
     echo "Rules"
     sync_file "${REPO_DIR}/AGENTS.md" "${OPENCODE_DIR}/AGENTS.md"
+fi
+
+# ── VS Code Agents (agents/vscode/ → .github/agents/) ────────────────────────
+# VS Code Copilot reads custom agents from .github/agents/ in the workspace.
+# Files stay in the repo; this section copies them to the expected location.
+# Guard: only copy *.agent.md — never copy plain .md files to this directory
+#        (they would be picked up with wrong frontmatter).
+if [[ -d "${REPO_DIR}/agents/vscode" ]]; then
+    echo ""
+    echo "VS Code Agents (.github/agents/)"
+    mkdir -p "${REPO_DIR}/.github/agents"
+    while IFS= read -r -d '' file; do
+        rel="${file#"${REPO_DIR}/agents/vscode/"}"
+        sync_file "$file" "${REPO_DIR}/.github/agents/${rel}"
+    done < <(find "${REPO_DIR}/agents/vscode" -name "*.agent.md" -print0)
 fi
 
 # ── VS Code skill symlinks (.agents/skills/) ──────────────────────────────────
